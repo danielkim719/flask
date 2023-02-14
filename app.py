@@ -2,6 +2,7 @@ from flask import Flask, request, redirect, render_template
 from urllib import parse
 import requests
 app = Flask(__name__)
+# https://port-0-flask-108dypx2ale3vyt89.sel3.cloudtype.app/
 
 @app.route("/")
 def index():
@@ -12,8 +13,8 @@ def auth():
     auth_url = "https://openapi.swit.io/oauth/authorize"
     params = {
         "scope": "admin:read admin:write user:read user:write",
-        "client_id": "",
-        "redirect_uri": "https://port-0-flask-108dypx2ale3vyt89.sel3.cloudtype.app/callback",
+        "client_id": "Zp4yUGEvt4ewnqKW7ys4uvF17lTQImKg",
+        "redirect_uri": "http://127.0.0.1:5000/auth/callback",
         "response_type": "code"
     }
     return redirect(f"{auth_url}?{parse.urlencode(params)}")
@@ -30,22 +31,21 @@ def auth_callback():
         "grant_type": "authorization_code",
         "client_id": "Zp4yUGEvt4ewnqKW7ys4uvF17lTQImKg",
         "client_secret": "6AZZE4g0260rG6K6AiI5lwSP",
-        "redirect_uri": "https://port-0-flask-108dypx2ale3vyt89.sel3.cloudtype.app/callback",
+        "redirect_uri": "http://127.0.0.1:5000/auth/callback",
         "code": code
     }
     response = requests.post(token_url, headers=headers_obj, data=data_obj)
     tk = response.json()["access_token"]
-    with open('token.py', 'w') as f:
-        f.write("user = '{tk}'")
-
-    return resp.json()
+    print(tk)    
+    with open('tokens.py', 'w') as f:
+        f.write("user = '{}'".format(tk))
+    return response.json()
 
 @app.route("/test")
 def test():
-    from token import user
-
+    import tokens as tk
     headers = {
-        "Authorization": "Bearer " + token.user
+        "Authorization": "Bearer "+ tk.user
     }
 
     response = requests.get(url="https://openapi.swit.io/v1/api/organization.user.list", headers=headers)
