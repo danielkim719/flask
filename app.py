@@ -3,6 +3,8 @@ from urllib import parse
 import requests
 app = Flask(__name__)
 # https://port-0-flask-108dypx2ale3vyt89.sel3.cloudtype.app/
+# http://127.0.0.1:5000/
+
 
 @app.route("/")
 def index():
@@ -14,7 +16,7 @@ def auth():
     params = {
         "scope": "admin:read admin:write user:read user:write",
         "client_id": "Zp4yUGEvt4ewnqKW7ys4uvF17lTQImKg",
-        "redirect_uri": "http://127.0.0.1:5000/auth/callback",
+        "redirect_uri": "https://port-0-flask-108dypx2ale3vyt89.sel3.cloudtype.app/auth/callback",
         "response_type": "code"
     }
     return redirect(f"{auth_url}?{parse.urlencode(params)}")
@@ -31,7 +33,7 @@ def auth_callback():
         "grant_type": "authorization_code",
         "client_id": "Zp4yUGEvt4ewnqKW7ys4uvF17lTQImKg",
         "client_secret": "6AZZE4g0260rG6K6AiI5lwSP",
-        "redirect_uri": "http://127.0.0.1:5000/auth/callback",
+        "redirect_uri": "https://port-0-flask-108dypx2ale3vyt89.sel3.cloudtype.app/auth/callback",
         "code": code
     }
     response = requests.post(token_url, headers=headers_obj, data=data_obj)
