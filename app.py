@@ -34,9 +34,9 @@ def auth_callback():
         "code": code
     }
     response = requests.post(token_url, headers=headers_obj, data=data_obj)
-    token = response.json()["access_token"]
+    tk = response.json()["access_token"]
     with open('token.py', 'w') as f:
-        f.write("user = '{token}'")
+        f.write("user = '{tk}'")
 
     return resp.json()
 
@@ -45,11 +45,11 @@ def test():
     from token import user
 
     headers = {
-        "Authorization": "Bearer " token.user
+        "Authorization": "Bearer " + token.user
     }
 
     response = requests.get(url="https://openapi.swit.io/v1/api/organization.user.list", headers=headers)
-    return res.json()
+    return response.json()
 
 # # slack webhook test
 # @app.route("/webhook", methods=['POST'])
